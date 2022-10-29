@@ -1,22 +1,272 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <title>Plotting in ChartJS</title>
-</head>
-<body>
 
-<
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      height: 100%;
+    }
+
+    body {
+      min-height: 100%;
+      line-height: 1;
+      font-family: sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6 {
+      font-size: 100%;
+    }
+
+    input,
+    select,
+    option,
+    optgroup,
+    textarea,
+    button,
+    pre,
+    code {
+      font-size: 100%;
+      font-family: inherit;
+    }
+
+    ol,
+    ul {
+      list-style: none;
+    }
+
+    h1 {
+      color: white;
+      margin: auto;
+      position: center;
+      font-size: 45px;
+
+    }
+
+    Body {
+      background-color: rgb(57, 34, 34);
+      height: 1px;
+      font-size: large;
+      font-family: he;
+    }
+  </style>
+  <title>Plotting in ChartJS</title>
+</head>
+
+<body>
+  <header>
+    <h1>Stability</h1>
+    <!-- <p>Enter your information below to track your daily progress</p>
+  </header>
+  <label for="exercise">Did you exercise today?</label>
+  Yes <input type="checkbox" name="exercise" id="exerciseYes" value="0.75">
+  No <input type="checkbox" name="exercise" id="exerciseNo" value="0.25">
+  <br><br>
+  <label for="diet">Did you eat healthy today?</label>
+  Yes <input type="checkbox" name="diet" id="dietYes" value="0.75">
+  No <input type="checkbox" name="diet" id="dietNo" value="0.25">
+  <br><br>
+  <label for="Caffine">Did you sleep more than 7 hours today?</label>
+  Yes <input type="checkbox" name="sleep" id="sleepYes" value="0.75">
+  No <input type="checkbox" name="sleep" id="sleepNo" value="0.25">
+  <br><br>
+  <label for="Mood">What mood were you in today most of the day?</label>
+  Good <input type="checkbox" name="mood" id="moodGood" value="0.75">
+  Normal <input type="checkbox" name="mood" id="moodNormal" value="0.5">
+  Bad <input type="checkbox" name="mood" id="moodBad" value="0.25">
+  <br><br>
+  <button id="submit">Submit</button><br><br>
+  <div id="results">
+    <p>URL:<a href="" id="url"></a></p>
+    <p>Source:<span id="source"></span></p>
+    <p>Predicted Mood:<span id="predictedMood"></span></p>
+  </div>
+
+  <button id="chartBtn">Chart</button>
+  <button id="chartRBtn">Radar</button>
+  <input id="number-of-days" type="number" min="5" max="60" value="4"> </br>
+  <button id="clearStorage">Clear Storage</button> -->
+
+    <canvas id="myChart" style="width:100%;max-width:700px"></canvas>
+
+
 
 </body>
 
 <script>
 
+  // website: https://dev.to/alisabaj/not-an-easy-algorithm-rotating-an-array-three-ways-2f6h
+  function rotate2(nums, k) {
+    k = k % nums.length;
+    let arr = [];
+    for (let i = 0; i < nums.length; i++) {
+      arr[(i + k) % nums.length] = nums[i];
+    }
+    for (let i = 0; i < nums.length; i++) {
+      nums[i] = arr[i];
+    }
+    return nums;
+  }
+  var xValuesOrg = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+
+  const specifyDay = [{
+    'dayNumber': '0',
+    'dayName': 'Sunday'
+  },
+  {
+    'dayNumber': '1',
+    'dayName': 'Saturday'
+  },
+  {
+    'dayNumber': '2',
+    'dayName': 'Friday'
+  },
+  {
+    'dayNumber': '3',
+    'dayName': 'Thursday'
+  },
+  {
+    'dayNumber': '4',
+    'dayName': 'Wednesday'
+  },
+  {
+    'dayNumber': '5',
+    'dayName': 'Tuesday'
+  },
+  {
+    'dayNumber': '6',
+    'dayName': 'Monday'
+  }];
+
+  const todayIs = 'Saturday';
+
+  
+const dayNumber = specifyDay.filter(item => `${item.dayNumber} ${item.dayName}`.includes(todayIs));
+console.log(dayNumber.dayNumber);
+
+  var xValues = rotate2(xValuesOrg, 0);
+
+
+  var myChart = document.getElementById('myChart').getContext('2d');
+
+  var myChart = new Chart("myChart", {
+    type: "line",
+    data: {
+      labels: xValues,
+      datasets: [{
+        data: [],
+        borderColor: "red",
+        fill: false
+      }, {
+        data: [],
+        borderColor: "green",
+        fill: false
+      }, {
+        data: [],
+        borderColor: "blue",
+        fill: false
+      }, {
+        data: [],
+        borderColor: "purple",
+        fill: false
+      }]
+    },
+    options: {
+      legend: { display: false }
+    }
+  });
+
+
+  function addData(foodVal, fitnessVal, sleepVal, moodVal) {
+    myChart.data.datasets[0].data.push(foodVal);
+    myChart.data.datasets[1].data.push(fitnessVal);
+    myChart.data.datasets[2].data.push(sleepVal);
+    myChart.data.datasets[3].data.push(moodVal);
+
+    myChart.update();
+  }
+
+  // Generate Random Data    
+  let numofDayMetrics = 1;
+  let numOfDays = 60;
+  let numOfMetrics = numOfDays * numofDayMetrics;
+
+  var metricTimes = ['7:45'];
+  const repeat = (arr, n) => Array(n).fill(arr).flat();
+  var repeatMetricTimes = repeat(metricTimes, numOfDays);
+  // console.log(repeatMetricTimes);
+
+  tmpExercise = Array.from({ length: numOfMetrics }, () => Math.floor(Math.random() * 2));
+  tmpDiet = Array.from({ length: numOfMetrics }, () => Math.floor(Math.random() * 2));
+  tmpSleep = Array.from({ length: numOfMetrics }, () => Math.floor(Math.random() * 2));
+  tmpMood = Array.from({ length: numOfMetrics }, () => Math.floor(Math.random() * 3));
+
+
+  // Function to Change data into yes and nos
+  changeTypeString = function (arrayInfo, isBinary) {
+    var arrayInfoSwitched = [];
+    var tmpInfo;
+    if (isBinary == true) {
+      for (const element of arrayInfo) {
+        if (element == 1) {
+          tmpInfo = 0.75;
+        } else {
+          tmpInfo = 0.25;
+        }
+        arrayInfoSwitched.push(tmpInfo);
+      }
+    } else {
+      for (const element of arrayInfo) {
+        if (element == 2) {
+          tmpInfo = 0.75;
+        } else if (element == 1) {
+          tmpInfo = 0.5;
+        } else if (element == 0) {
+          tmpInfo = 0.25;
+        }
+        arrayInfoSwitched.push(tmpInfo);
+      }
+    }
+
+
+    return arrayInfoSwitched;
+  }
+
+  var diet60 = changeTypeString(tmpDiet, true);
+  var sleep60 = changeTypeString(tmpSleep, true);
+  var exercise60 = changeTypeString(tmpExercise, true);
+  var mood60 = changeTypeString(tmpMood, false);
+
+
+
+  let i = 0;
+
+  let inputNumDays = 10;
+  for (let i = 0; i < inputNumDays; i++) {
+    // storedValues(exercise60[i], diet60[i], sleep60[i], mood60[i]);
+  }
+
+
 
 
 </script>
+
+
+<script> src = "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"</script>
+
 </html>
