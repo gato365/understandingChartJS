@@ -155,11 +155,11 @@
 
   const todayIs = 'Saturday';
 
-  
-const dayNumber = specifyDay.filter(item => `${item.dayNumber} ${item.dayName}`.includes(todayIs));
-console.log(dayNumber.dayNumber);
 
-  var xValues = rotate2(xValuesOrg, 0);
+  const dayNumber = specifyDay.filter(item => `${item.dayNumber} ${item.dayName}`.includes(todayIs));
+  console.log(dayNumber.dayNumber);
+
+  var xValues = rotate2(xValuesOrg, 5);
 
 
   var myChart = document.getElementById('myChart').getContext('2d');
@@ -264,6 +264,14 @@ console.log(dayNumber.dayNumber);
 
 
 
+
+  var arrayLearn = [];
+  for (let i = 0; i < 60; i++) {
+    arrayLearn.push(i);
+
+  }
+
+  console.log(arrayLearn.slice(-7));
 </script>
 
 
